@@ -1,1 +1,1 @@
-# alltronic-ssda!
+# alltronic-ssda
