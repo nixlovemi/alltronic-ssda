@@ -103,7 +103,7 @@ function url(){
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
 
     // return: http://localhost/myproject/
-    return $protocol.'://'.$hostName."/ssda/";
+    return $protocol.'://'.$hostName."/alltronic-ssda/";
 }
 function soBasePath() {
 	return FCPATH;

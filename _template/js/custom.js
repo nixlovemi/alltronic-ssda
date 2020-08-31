@@ -83,6 +83,7 @@ $(document).ready(function () {
 		}
 	});
 
+	// @todo fazer esquema de pegar filtro no delete tbm; pega só no edit
 	$('.table-link-confirm').click(function () {
 		var homeUrl = $('body').data('base-url');
 		var msg     = $(this).data('message');

@@ -67,10 +67,37 @@ INSERT INTO `tb_menu` (`men_id`, `men_descricao`, `men_pai`, `men_controller`, `
 
 UPDATE `tb_menu` SET men_controller = 'Relatorio', men_action = 'index' WHERE men_descricao = 'Relatórios';
 
-DROP TRIGGER IF EXISTS trig_check_insert;
-
+DROP TRIGGER IF EXISTS trig_check_menu_insert;
 delimiter //
-CREATE TRIGGER `trig_check_insert` BEFORE INSERT ON `tb_menu` FOR EACH ROW 
+CREATE TRIGGER `trig_check_menu_insert` BEFORE INSERT ON `tb_menu` FOR EACH ROW 
+BEGIN
+	DECLARE v_msg_error TEXT DEFAULT '';
+    DECLARE v_temp_string TEXT DEFAULT '';
+	IF (LENGTH(COALESCE(NEW.men_descricao, '')) < 3) THEN
+    	SET v_temp_string = v_msg_error;
+        SET v_msg_error   = CONCAT(' - A descrição deve ter pelo menos 3 caracteres! ', v_temp_string);
+	END IF;
+    
+	IF (LENGTH(COALESCE(NEW.men_controller, '')) > 0) AND (LENGTH(COALESCE(NEW.men_action, '')) <= 0) THEN
+    	SET v_temp_string = v_msg_error;
+        SET v_msg_error   = CONCAT(' - Preencha a action! ', v_temp_string);
+	END IF;
+    
+    IF (LENGTH(COALESCE(NEW.men_action, '')) > 0) AND (LENGTH(COALESCE(NEW.men_controller, '')) <= 0) THEN
+    	SET v_temp_string = v_msg_error;
+        SET v_msg_error   = CONCAT(' - Preencha o controller! ', v_temp_string);
+	END IF;
+    
+    IF v_msg_error != '' THEN
+    	SET v_temp_string = CONCAT('Corrija os erros antes de prosseguir: ', v_msg_error);
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = v_temp_string;
+	END IF;
+END //
+delimiter ;
+
+DROP TRIGGER IF EXISTS trig_check_menu_update;
+delimiter //
+CREATE TRIGGER `trig_check_menu_update` BEFORE INSERT ON `tb_menu` FOR EACH ROW 
 BEGIN
 	DECLARE v_msg_error TEXT DEFAULT '';
     DECLARE v_temp_string TEXT DEFAULT '';

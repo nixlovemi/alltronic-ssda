@@ -16,6 +16,22 @@ class Menu extends CI_Controller {
 		return $Menu;
 	}
 
+	private function getComboMenu() {
+		$this->load->model('TbMenu');
+		$retMenu   = $this->TbMenu->getComboMenu();
+		$comboMenu = $retMenu->getRetByKey('comboMenu') ?? [];
+
+		$arrV = [];
+		$arrT = [];
+
+		foreach($comboMenu as $key => $value) {
+			$arrV[] = $key;
+			$arrT[] = $value;
+		}
+
+		return array($arrV, $arrT);
+	}
+
 	public function index() {
 		$this->load->model('TbMenu');
 		$retMenuList = $this->TbMenu->getHtmlList();
@@ -32,13 +48,17 @@ class Menu extends CI_Controller {
 	}
 
 	public function inserir($Menu=[]) {
+		list($arrPaiV, $arrPaiT) = $this->getComboMenu();
+
 		$this->template->showView(array(
 			'nivelAction' => 100,
 			'viewTitle'   => 'Menu - Adicionar',
 			'contrAction' => 'Menu/insert',
 			'arrViewVars' => array(
-				'action' => 'insert',
-				'Menu'   => $Menu,
+				'action'  => 'insert',
+				'Menu'    => $Menu,
+				'arrPaiV' => $arrPaiV,
+				'arrPaiT' => $arrPaiT,
 			)
 		));
 	}
@@ -69,14 +89,18 @@ class Menu extends CI_Controller {
 			MessageBox::setMessage('Warning', "Erro ao editar o menu ID$menId. Msg: " . $retMenu->getMsg());
 			$this->index();
 		} else {
+			list($arrPaiV, $arrPaiT) = $this->getComboMenu();
+
 			$Menu = $retMenu->getRetByKey('Menu') ?? [];
 			$this->template->showView(array(
 				'nivelAction' => 100,
 				'viewTitle'   => 'Menu - Editar',
 				'contrAction' => 'Menu/insert',
 				'arrViewVars' => array(
-					'Menu'   => $Menu,
-					'action' => 'edit',
+					'Menu'    => $Menu,
+					'action'  => 'edit',
+					'arrPaiV' => $arrPaiV,
+					'arrPaiT' => $arrPaiT,
 				)
 			));
 		}

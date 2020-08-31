@@ -56,6 +56,7 @@ class TbMenu extends CI_Model {
 	}
 
 	public function getHtmlList() {
+		$tableId  = 'tbMenuHtmlList';
 		$arrAtivo = array(
 			""  => "",
 			"0" => "N&atilde;o",
@@ -75,7 +76,7 @@ class TbMenu extends CI_Model {
 			$Return = new ReturnLib(true, 'Lista dos menus pesquisada com sucesso!');
 
 			$html  = "<div class='table-responsive'>";
-			$html .= "  <table id='tbMenuHtmlList' class='table align-items-center table-flush table-hover dataTable'>";
+			$html .= "  <table id='$tableId' class='table align-items-center table-flush table-hover dataTable'>";
 			$html .= "    <thead class='thead-light'>";
 			$html .= "      <tr>";
 			$html .= "        <th>ID</th>";
@@ -186,6 +187,57 @@ class TbMenu extends CI_Model {
 		return $Return;
 	}
 
+	public function getComboMenu($pai=0) {
+		$retMenu  = $this->getArrMenu(100);
+		$arrMenu  = $retMenu->getRetByKey('arrMenu') ?? [];
+		$arrCombo = [];
+
+		# @todo fazer recursivo; sem limite de nivel
+		foreach($arrMenu as $menuItem){
+			$vMenId    = $menuItem['id'] ?? NULL;
+			$vMenDesc  = $menuItem['descricao'] ?? NULL;
+			$vMenFilho = $menuItem['arrFilhos'] ?? NULL;
+
+			if($vMenId !== NULL && $vMenDesc !== NULL) {
+				$arrCombo[$vMenId] = $vMenDesc;
+
+				foreach($vMenFilho as $menuItem2) {
+					$vMenId    = $menuItem2['id'] ?? NULL;
+					$vMenDesc  = $menuItem2['descricao'] ?? NULL;
+					$vMenFilho = $menuItem2['arrFilhos'] ?? NULL;
+
+					if($vMenId !== NULL && $vMenDesc !== NULL) {
+						$arrCombo[$vMenId] = '--' . $vMenDesc;
+
+						foreach($vMenFilho as $menuItem3) {
+							$vMenId    = $menuItem3['id'] ?? NULL;
+							$vMenDesc  = $menuItem3['descricao'] ?? NULL;
+							$vMenFilho = $menuItem3['arrFilhos'] ?? NULL;
+
+							if($vMenId !== NULL && $vMenDesc !== NULL) {
+								$arrCombo[$vMenId] = '----' . $vMenDesc;
+
+								foreach($vMenFilho as $menuItem4) {
+									$vMenId    = $menuItem4['id'] ?? NULL;
+									$vMenDesc  = $menuItem4['descricao'] ?? NULL;
+									$vMenFilho = $menuItem4['arrFilhos'] ?? NULL;
+
+									if($vMenId !== NULL && $vMenDesc !== NULL) {
+										$arrCombo[$vMenId] = '------' . $vMenDesc;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$Return = new ReturnLib(false, 'Combo Menu retornado com sucesso!');
+		$Return->addRet('comboMenu', $arrCombo);
+		return $Return;
+	}
+
 	public function getMenuById($menId) {
 		$TbMenu  = $this->getTableEntity();
 		$retMenu = $TbMenu->fGet($menId);
@@ -242,6 +294,7 @@ class TbMenu extends CI_Model {
 		$vMenDescricao = $Menu['men_descricao'] ?? '';
 		$vMenAtivo     = $Menu['men_ativo'] ?? '';
 		$vMenNivel     = $Menu['men_nivel'] ?? '';
+		$vMenPai       = $Menu['men_pai'] ?? '';
 
 		$arrErrors = [];
 		if(!$vMenId > 0){
@@ -260,6 +313,10 @@ class TbMenu extends CI_Model {
 		$arrMenNivel = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 		if(!in_array($vMenNivel, $arrMenNivel)){
 			$arrErrors[] = "* O campo Nível está com um valor inválido.";
+		}
+
+		if($vMenId == $vMenPai){
+			$arrErrors[] = "* Escolha um menu Pai diferente.";
 		}
 
 		$err = count($arrErrors) > 0;

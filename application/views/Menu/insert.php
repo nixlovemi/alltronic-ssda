@@ -1,7 +1,9 @@
 <?php
 // variaveis da view
-$Menu   = $Menu ?? [];
-$action = $action ?? 'details';
+$Menu    = $Menu ?? [];
+$action  = $action ?? 'details';
+$arrPaiV = $arrPaiV ?? [];
+$arrPaiT = $arrPaiT ?? [];
 
 $frmName = 'frmCadMenu';
 if($action == 'edit'){
@@ -20,6 +22,7 @@ $vMenController = $Menu['men_controller'] ?? '';
 $vMenAction     = $Menu['men_action'] ?? '';
 $vMenIcon       = $Menu['men_icon'] ?? '';
 $vMenNivel      = $Menu['men_nivel'] ?? 0;
+
 // =================
 
 $html  = "<form name='$frmName' id='$frmName' method='post' action='$frmAction'>";
@@ -52,8 +55,8 @@ $html .= "    " . Template::Select(array(
 					"name"     => "menPai",
 					"id"       => "menPai",
 					"value"    => (int) $vMenPai,
-					"arrValue" => [1, 2, 3],
-					"arrText"  => ['Cadastros', 'Menu', 'Relatórios'],
+					"arrValue" => $arrPaiV,
+					"arrText"  => $arrPaiT,
 				  ));
 $html .= "      </div>";
 $html .= "    </div>";

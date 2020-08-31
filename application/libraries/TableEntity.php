@@ -152,7 +152,8 @@ class TableEntity {
             $canAddField = ($fieldName !== $this->_primaryKey) || ($fieldName === $this->_primaryKey && $fieldValue > 0);
             if($canAddField){
                 if ($fieldValue !== 'NULL') {
-                    $fieldValue = $this->escapeField(utf8_decode($fieldValue));
+                    # $fieldValue = $this->escapeField(utf8_decode($fieldValue));
+					$fieldValue = $this->escapeField($fieldValue);
                 }
 
                 $arrFieldName[]  = $fieldName;
@@ -197,7 +198,8 @@ class TableEntity {
                 if($fieldValue === NULL){
                     $fieldValue = 'NULL';
                 } else {
-                    $fieldValue = $this->escapeField(utf8_decode($fieldValue));
+                    # $fieldValue = $this->escapeField(utf8_decode($fieldValue));
+					$fieldValue = $this->escapeField($fieldValue);
                 }
 
                 $arrUpdateFields[] = " $fieldName = $fieldValue ";
