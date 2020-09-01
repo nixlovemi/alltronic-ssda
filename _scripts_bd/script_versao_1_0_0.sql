@@ -59,7 +59,7 @@ ALTER TABLE `tb_menu` CHANGE `men_action` `men_action` VARCHAR(40) CHARACTER SET
 
 INSERT INTO `tb_menu` (`men_id`, `men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES (NULL, 'Cadastros', NULL, NULL, NULL, '<i class=\"far fa-fw fa-folder\"></i>', '100', '1');
 
-INSERT INTO `tb_menu` (`men_id`, `men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES (NULL, 'Menu', (SELECT men_id FROM tb_menu WHERE men_descricao = 'Cadastros'), 'Menu', 'index', '<i class=\"fas fa-fw fa-bars\"></i>', '100', '1');
+INSERT INTO `tb_menu` (`men_id`, `men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES (NULL, 'Menu', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'Menu', 'index', '<i class=\"fas fa-fw fa-bars\"></i>', '100', '1');
 
 ALTER TABLE `tb_menu` CHANGE `men_nivel` `men_nivel` INT(11) NOT NULL DEFAULT '0' COMMENT 'nível de acesso/permissão';
 
@@ -122,5 +122,9 @@ BEGIN
 	END IF;
 END //
 delimiter ;
+
+INSERT INTO `tb_menu` (`men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES ('Status', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'Status', 'index', '<i class=\"fas fa-thermometer-half\"></i>', '100', '1');
+INSERT INTO `tb_menu` (`men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES ('Máquina Grupo', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'MaquinaGrupo', 'index', '<i class=\"fas fa-industry\"></i>', '100', '1');
+ALTER TABLE `alltronic_ssda`.`tb_maquina_grupo` ADD UNIQUE `uk_mgr_descricao` (`mgr_descricao`);
 
 COMMIT;

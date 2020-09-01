@@ -68,7 +68,7 @@ class Status extends CI_Controller {
 			'contrAction' => 'Status/insert',
 			'arrViewVars' => array(
 				'action'       => 'insert',
-				'Menu'         => $Status,
+				'Status'       => $Status,
 				'arrTpStatusV' => $arrTpStatusV,
 				'arrTpStatusT' => $arrTpStatusT,
 				'arrBicoV'     => $arrBicoV,
@@ -96,35 +96,39 @@ class Status extends CI_Controller {
 		}
 	}
 
-	public function editar($staId) {
+	public function editar($staId, $Status=NULL) {
 		$this->load->model('TbStatus');
-		$retStatus = $this->TbStatus->getStatusById($staId);
-		if( $retStatus->isError() ){
-			MessageBox::setMessage('Warning', "Erro ao editar o status ID$staId. Msg: " . $retStatus->getMsg());
-			$this->index();
-		} else {
-			list($arrTpStatusV, $arrTpStatusT) = $this->getComboTpStatus();
-			list($arrBicoV, $arrBicoT)         = $this->getComboBico();
 
-			$Status = $retStatus->getRetByKey('Status') ?? [];
-			$this->template->showView(array(
-				'nivelAction' => 100,
-				'viewTitle'   => 'Status - Editar',
-				'contrAction' => 'Status/insert',
-				'arrViewVars' => array(
-					'Status'  => $Status,
-					'action'  => 'edit',
-					'arrTpStatusV' => $arrTpStatusV,
-					'arrTpStatusT' => $arrTpStatusT,
-					'arrBicoV'     => $arrBicoV,
-					'arrBicoT'     => $arrBicoT,
-				)
-			));
+		if($Status === NULL || !is_array($Status)) {
+			$retStatus = $this->TbStatus->getStatusById($staId);
+			if( $retStatus->isError() ){
+				MessageBox::setMessage('Warning', "Erro ao editar o status ID$staId. Msg: " . $retStatus->getMsg());
+				$this->index();
+			} else {
+				$Status = $retStatus->getRetByKey('Status') ?? [];
+			}
 		}
+
+		list($arrTpStatusV, $arrTpStatusT) = $this->getComboTpStatus();
+		list($arrBicoV, $arrBicoT)         = $this->getComboBico();
+		
+		$this->template->showView(array(
+			'nivelAction' => 100,
+			'viewTitle'   => 'Status - Editar',
+			'contrAction' => 'Status/insert',
+			'arrViewVars' => array(
+				'Status'  => $Status,
+				'action'  => 'edit',
+				'arrTpStatusV' => $arrTpStatusV,
+				'arrTpStatusT' => $arrTpStatusT,
+				'arrBicoV'     => $arrBicoV,
+				'arrBicoT'     => $arrBicoT,
+			)
+		));
 	}
 
 	public function postEditar() {
-		$vars = PostLib::getPost();
+		$vars   = PostLib::getPost();
 		$Status = $this->getStatusVars($vars);
 
 		$this->load->model('TbStatus');
@@ -134,7 +138,7 @@ class Status extends CI_Controller {
 		$text = ($retUpdate->isError()) ? $retUpdate->getMsg(): 'Edição efetuada com sucesso!';
 		MessageBox::setMessage($type, $text);
 
-		$this->editar($Status['sta_id']);
+		$this->editar($Status['sta_id'], $Status);
 	}
 
 	public function deletar($staId) {

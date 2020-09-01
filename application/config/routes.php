@@ -53,8 +53,10 @@ $route['default_controller']   = 'Login';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['execLogin']     = 'Login/postLogin';
-$route['inserirMenu']   = 'Menu/postInserir';
-$route['editarMenu']    = 'Menu/postEditar';
-$route['inserirStatus'] = 'Status/postInserir';
-$route['editarStatus']  = 'Status/postEditar';
+$route['execLogin']       = 'Login/postLogin';
+$route['inserirMenu']     = 'Menu/postInserir';
+$route['editarMenu']      = 'Menu/postEditar';
+$route['inserirStatus']   = 'Status/postInserir';
+$route['editarStatus']    = 'Status/postEditar';
+$route['inserirMaqGrupo'] = 'MaquinaGrupo/postInserir';
+$route['editarMaqGrupo']  = 'MaquinaGrupo/postEditar';

@@ -82,28 +82,30 @@ class Menu extends CI_Controller {
 		}
 	}
 
-	public function editar($menId) {
+	public function editar($menId, $Menu=NULL) {
 		$this->load->model('TbMenu');
-		$retMenu = $this->TbMenu->getMenuById($menId);
-		if( $retMenu->isError() ){
-			MessageBox::setMessage('Warning', "Erro ao editar o menu ID$menId. Msg: " . $retMenu->getMsg());
-			$this->index();
-		} else {
-			list($arrPaiV, $arrPaiT) = $this->getComboMenu();
-
-			$Menu = $retMenu->getRetByKey('Menu') ?? [];
-			$this->template->showView(array(
-				'nivelAction' => 100,
-				'viewTitle'   => 'Menu - Editar',
-				'contrAction' => 'Menu/insert',
-				'arrViewVars' => array(
-					'Menu'    => $Menu,
-					'action'  => 'edit',
-					'arrPaiV' => $arrPaiV,
-					'arrPaiT' => $arrPaiT,
-				)
-			));
+		if($Menu === NULL || !is_array($Menu)) {
+			$retMenu = $this->TbMenu->getMenuById($menId);
+			if( $retMenu->isError() ){
+				MessageBox::setMessage('Warning', "Erro ao editar o menu ID$menId. Msg: " . $retMenu->getMsg());
+				$this->index();
+			} else {
+				$Menu = $retMenu->getRetByKey('Menu') ?? [];
+			}
 		}
+		
+		list($arrPaiV, $arrPaiT) = $this->getComboMenu();
+		$this->template->showView(array(
+			'nivelAction' => 100,
+			'viewTitle'   => 'Menu - Editar',
+			'contrAction' => 'Menu/insert',
+			'arrViewVars' => array(
+				'Menu'    => $Menu,
+				'action'  => 'edit',
+				'arrPaiV' => $arrPaiV,
+				'arrPaiT' => $arrPaiT,
+			)
+		));
 	}
 
 	public function postEditar() {
@@ -117,7 +119,7 @@ class Menu extends CI_Controller {
 		$text = ($retUpdate->isError()) ? $retUpdate->getMsg(): 'Edição efetuada com sucesso!';
 		MessageBox::setMessage($type, $text);
 
-		$this->editar($Menu['men_id']);
+		$this->editar($Menu['men_id'], $Menu);
 	}
 
 	public function deletar($menId) {

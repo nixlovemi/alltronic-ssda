@@ -120,7 +120,7 @@ class TableEntity {
             for ($i = 0; $i < count($this->_arrFields); $i++) {
                 $field      = $this->_arrFields[$i];
                 $fieldName  = $field["name"] ?? "";
-                $fieldType  = $field["type"] ?? "";
+                # $fieldType  = $field["type"] ?? "";
                 $fieldValue = $row[$fieldName] ?? "";
 
                 # if ($fieldType === 'string') {
