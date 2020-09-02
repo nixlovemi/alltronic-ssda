@@ -79,6 +79,26 @@ class TbMaquinaGrupo extends CI_Model {
 		return $Return;
 	}
 
+	public function getCombo() {
+		$this->load->database();
+		$this->db->select('mgr_id, mgr_descricao');
+		$this->db->from('tb_maquina_grupo');
+		$this->db->where('mgr_ativo', 1);
+		$this->db->order_by('mgr_descricao');
+
+		$query = $this->db->get();
+		foreach ($query->result() as $row){
+			$mgrId   = $row->mgr_id;
+			$mgrDesc = $row->mgr_descricao;
+
+			$arrCombo[$mgrId] = $mgrDesc;
+		}
+
+		$Return = new ReturnLib(false, 'Combo Máquina Grupo retornado com sucesso!');
+		$Return->addRet('comboMaquinaGrupo', $arrCombo);
+		return $Return;
+	}
+
 	public function getMaqGrupoById($mgrId) {
 		$TbEntity  = $this->getTableEntity();
 		$retEntity = $TbEntity->fGet($mgrId);

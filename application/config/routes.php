@@ -60,3 +60,5 @@ $route['inserirStatus']   = 'Status/postInserir';
 $route['editarStatus']    = 'Status/postEditar';
 $route['inserirMaqGrupo'] = 'MaquinaGrupo/postInserir';
 $route['editarMaqGrupo']  = 'MaquinaGrupo/postEditar';
+$route['inserirMaquina']  = 'Maquina/postInserir';
+$route['editarMaquina']   = 'Maquina/postEditar';

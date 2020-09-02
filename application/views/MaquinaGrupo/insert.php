@@ -12,9 +12,9 @@ if($action == 'edit'){
 	$frmAction  = BASE_URL . 'inserirMaqGrupo';
 }
 
-$vMgrId         = $MaquinaGrupo['mgr_id'] ?? '';
-$vMgrDescricao  = $MaquinaGrupo['mgr_descricao'] ?? '';
-$vMgrAtivo      = $MaquinaGrupo['mgr_ativo'] ?? '';
+$vMgrId        = $MaquinaGrupo['mgr_id'] ?? '';
+$vMgrDescricao = $MaquinaGrupo['mgr_descricao'] ?? '';
+$vMgrAtivo     = (isset($MaquinaGrupo['mgr_ativo']) && $MaquinaGrupo['mgr_ativo'] >= 0) ? $MaquinaGrupo['mgr_ativo']: 1;
 // =================
 
 $html  = "<form name='$frmName' id='$frmName' method='post' action='$frmAction'>";

@@ -1,10 +1,10 @@
 <?php
 echo MessageBox::showMessage();
 
-$urlClick = BASE_URL . 'Status/inserir';
+$urlClick = BASE_URL . 'Maquina/inserir';
 echo Template::ButtonInfo(array(
-	"name"  => "btnNovoStatus",
-	"value" => "NOVO STATUS",
+	"name"  => "btnNovaMaquina",
+	"value" => "NOVA MÁQUINA",
 	"click" => "document.location.href = '$urlClick';",
 	"class" => "mb-4"
 ));
@@ -12,10 +12,10 @@ echo Template::ButtonInfo(array(
 <div class='row'>
 	<div class='col-12'>
 		<?php
-		$htmlStatus = $htmlStatus ?? '';
+		$htmlList = $htmlList ?? '';
 		echo Template::Panel(array(
-			"title"   => "Lista dos Status",
-			"content" => $htmlStatus ?? ''
+			"title"   => "Lista das Máquinas",
+			"content" => $htmlList ?? ''
 		));
 		?>
 	</div>

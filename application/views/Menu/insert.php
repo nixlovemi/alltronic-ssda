@@ -17,12 +17,11 @@ if($action == 'edit'){
 $vMenId         = $Menu['men_id'] ?? '';
 $vMenDescricao  = $Menu['men_descricao'] ?? '';
 $vMenPai        = $Menu['men_pai'] ?? '';
-$vMenAtivo      = $Menu['men_ativo'] ?? 1;
+$vMenAtivo      = (isset($Menu['men_ativo']) && $Menu['men_ativo'] >= 0) ? $Menu['men_ativo']: 1;
 $vMenController = $Menu['men_controller'] ?? '';
 $vMenAction     = $Menu['men_action'] ?? '';
 $vMenIcon       = $Menu['men_icon'] ?? '';
 $vMenNivel      = $Menu['men_nivel'] ?? 0;
-
 // =================
 
 $html  = "<form name='$frmName' id='$frmName' method='post' action='$frmAction'>";

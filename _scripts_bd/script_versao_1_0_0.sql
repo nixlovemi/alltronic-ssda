@@ -126,5 +126,14 @@ delimiter ;
 INSERT INTO `tb_menu` (`men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES ('Status', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'Status', 'index', '<i class=\"fas fa-thermometer-half\"></i>', '100', '1');
 INSERT INTO `tb_menu` (`men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES ('Máquina Grupo', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'MaquinaGrupo', 'index', '<i class=\"fas fa-industry\"></i>', '100', '1');
 ALTER TABLE `alltronic_ssda`.`tb_maquina_grupo` ADD UNIQUE `uk_mgr_descricao` (`mgr_descricao`);
+INSERT INTO `tb_menu` (`men_descricao`, `men_pai`, `men_controller`, `men_action`, `men_icon`, `men_nivel`, `men_ativo`) VALUES ('Máquina', (SELECT a.men_id FROM tb_menu a WHERE a.men_descricao = 'Cadastros'), 'Maquina', 'index', '<i class=\"fas fa-industry\"></i>', '100', '1');
+
+DROP TRIGGER IF EXISTS trig_delete_maquina_bico;
+delimiter //
+CREATE TRIGGER `trig_delete_maquina_bico` BEFORE DELETE ON `tb_maquina` FOR EACH ROW 
+BEGIN
+	DELETE FROM tb_maquina_bico WHERE mab_maq_id = OLD.maq_id;
+END //
+delimiter ;
 
 COMMIT;

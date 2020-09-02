@@ -3,7 +3,7 @@ echo MessageBox::showMessage();
 
 $urlClick = BASE_URL . 'MaquinaGrupo/inserir';
 echo Template::ButtonInfo(array(
-	"name"  => "btnNovoMenu",
+	"name"  => "btnNovoMaquinaGrupo",
 	"value" => "NOVO GRUPO DE MÁQUINA",
 	"click" => "document.location.href = '$urlClick';",
 	"class" => "mb-4"
